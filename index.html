@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Idle Soccer Manager: Build Your 5-a-Side Street Team</title>
+<meta name="description" content="Collect player cards, spend your match bonus mid-game and beat every boss across 10 leagues. Free on Android.">
+<meta name="theme-color" content="#15123f">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Idle Soccer Manager">
+<meta property="og:description" content="Build a 5-a-side street team and climb 10 football leagues. Free on Google Play.">
+<meta property="og:image" content="https://abdurrahmandemir.github.io/idlesoccermanager.github.io/assets/og.jpg">
+<link rel="icon" href="assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/lilita-one-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/nunito-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:"Lilita One";font-weight:400;font-display:swap;src:url(assets/fonts/lilita-one-latin-400-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Nunito";font-weight:600;font-display:swap;src:url(assets/fonts/nunito-latin-600-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Nunito";font-weight:600;font-display:swap;src:url(assets/fonts/nunito-latin-ext-600-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+20A0-20AB,U+20AD-20C0,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Nunito";font-weight:800;font-display:swap;src:url(assets/fonts/nunito-latin-800-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Nunito";font-weight:800;font-display:swap;src:url(assets/fonts/nunito-latin-ext-800-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+20A0-20AB,U+20AD-20C0,U+2C60-2C7F,U+A720-A7FF}
+:root{
+  --ink:#15123f;
+  --panel:#262070;
+  --blue:#2f6bff;
+  --blue-deep:#2559db;
+  --sun:#ffd60a;
+  --chalk:#fff;
+  --turf:#7cff5b;
+  --muted:#c7caf5;
+  --radius:22px;
+  --display:"Lilita One","Arial Rounded MT Bold",system-ui,sans-serif;
+  --body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ink);color:var(--chalk);font:600 1.0625rem/1.55 var(--body)}
+img,video{display:block;max-width:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px;border-radius:6px}
+.wrap{width:min(1080px,100% - 40px);margin-inline:auto}
+
+h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;letter-spacing:.005em}
+.outlined{
+  -webkit-text-stroke:.16em var(--ink);
+  paint-order:stroke fill;
+  text-shadow:0 .06em 0 var(--ink);
+}
+.line-sun{color:var(--sun)}
+
+/* ---------- hero ---------- */
+.hero{
+  background:repeating-conic-gradient(from 0deg at 50% 62%,var(--blue) 0 7.5deg,var(--blue-deep) 7.5deg 15deg);
+  padding-bottom:56px;
+  overflow:hidden;
+}
+.top{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
+.brand{display:flex;align-items:center;gap:10px;font:400 1.25rem/1 var(--display);text-decoration:none}
+.brand img{width:44px;height:44px;border-radius:11px}
+.lang{display:flex;gap:4px;background:rgba(21,18,63,.55);padding:4px;border-radius:999px}
+.lang button{
+  font:800 .85rem/1 var(--body);color:var(--chalk);background:none;border:0;border-radius:999px;
+  padding:8px 12px;min-width:44px;min-height:36px;cursor:pointer;
+}
+.lang button[aria-pressed="true"]{background:var(--sun);color:var(--ink)}
+
+.hero-grid{display:grid;gap:28px;align-items:center;padding-top:12px}
+.hero h1{font-size:clamp(2.5rem,10.5vw,4.75rem);line-height:1.02}
+.hero h1 span{display:block;text-wrap:balance}
+.sub{margin:18px 0 0;font-size:1.125rem;max-width:34ch;text-shadow:0 1px 0 rgba(21,18,63,.55)}
+.cta-wrap{margin-top:24px}
+@media (max-width:899px){.hero .btn{width:100%;max-width:440px}.hero .fine{text-align:left}}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:12px;
+  min-height:60px;padding:0 26px;border-radius:16px;border:3px solid var(--ink);
+  background:var(--sun);color:var(--ink);text-decoration:none;
+  font:400 clamp(1.1rem,4.7vw,1.3rem)/1 var(--display);
+  box-shadow:0 6px 0 var(--ink);
+  transition:transform .12s ease,box-shadow .12s ease;
+}
+.btn:hover{transform:translateY(2px);box-shadow:0 4px 0 var(--ink)}
+.btn:active{transform:translateY(6px);box-shadow:0 0 0 var(--ink)}
+.btn svg{width:22px;height:22px;flex:none}
+.fine{margin:16px 0 0;font-size:.9rem;color:var(--chalk);opacity:.92;max-width:40ch;text-shadow:0 1px 0 rgba(21,18,63,.55)}
+
+.phone{
+  border:6px solid var(--chalk);border-radius:26px;overflow:hidden;background:var(--panel);
+  box-shadow:0 10px 0 rgba(8,6,38,.55);
+}
+.phone img,.phone video{width:100%;height:auto}
+.hero-phone{width:min(74vw,300px);margin-inline:auto;aspect-ratio:9/16}
+.hero-phone video{height:100%;object-fit:cover}
+
+/* ---------- bands ---------- */
+.band{padding:64px 0}
+.band h2{font-size:clamp(1.9rem,6.6vw,3rem);line-height:1.08;max-width:18ch}
+.lead{margin:16px 0 0;color:var(--muted);max-width:52ch}
+
+.pair{display:flex;gap:16px;margin-top:36px;justify-content:center}
+.pair .phone{width:min(44vw,260px)}
+.pair .phone:nth-child(2){margin-top:34px}
+
+.steps{list-style:none;margin:44px 0 0;padding:0;display:grid;gap:26px;counter-reset:step}
+.steps li{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;align-items:start;counter-increment:step}
+.steps li::before{
+  content:counter(step);
+  grid-row:span 2;
+  font:400 2.6rem/1 var(--display);color:var(--sun);
+  -webkit-text-stroke:.14em var(--ink);paint-order:stroke fill;
+  min-width:1.1ch;text-align:center;
+}
+.steps h3{font-size:1.4rem;line-height:1.15}
+.steps p{margin:0;color:var(--muted)}
+
+.cards-band{background:var(--panel)}
+.trio{
+  display:flex;gap:16px;margin-top:36px;align-items:flex-start;
+  overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 20px 18px;margin-inline:-20px;
+  scrollbar-width:none;
+}
+.trio::-webkit-scrollbar{display:none}
+.trio .phone{flex:none;width:min(62vw,250px);scroll-snap-align:center}
+.extras{margin:28px 0 0;padding:0;list-style:none;display:grid;gap:10px;max-width:52ch}
+.extras li{padding-left:28px;position:relative}
+.extras li::before{content:"";position:absolute;left:0;top:.45em;width:14px;height:14px;border-radius:50%;background:var(--turf);border:3px solid var(--ink)}
+
+.leagues-grid{display:grid;gap:32px;align-items:center}
+.leagues-grid .phone{width:min(100%,560px);margin-inline:auto}
+
+.final{
+  text-align:center;
+  background:repeating-conic-gradient(from 0deg at 50% 100%,var(--blue) 0 7.5deg,var(--blue-deep) 7.5deg 15deg);
+  padding:72px 0 80px;
+}
+.final img{width:104px;height:104px;border-radius:24px;margin:0 auto 20px;border:4px solid var(--chalk);box-shadow:0 8px 0 rgba(8,6,38,.55)}
+.final h2{font-size:clamp(2rem,7.4vw,3.2rem);line-height:1.08;max-width:16ch;margin:0 auto}
+.final .cta-wrap{margin-top:28px}
+.final .fine{margin-inline:auto}
+
+footer{padding:28px 0 96px;font-size:.85rem;color:var(--muted)}
+footer p{margin:0 0 6px;max-width:70ch}
+
+/* sticky bar for phones */
+.bar{
+  position:fixed;inset:auto 0 0 0;z-index:10;
+  display:flex;align-items:center;gap:12px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+  background:var(--ink);border-top:3px solid var(--sun);
+  transform:translateY(110%);transition:transform .25s ease;
+}
+.bar.on{transform:none}
+.bar img{width:44px;height:44px;border-radius:11px}
+.bar b{font:400 1.05rem/1.1 var(--display);flex:1;min-width:0}
+.bar .btn{min-height:46px;padding:0 18px;font-size:1.05rem;box-shadow:0 4px 0 #000}
+
+@media (min-width:900px){
+  .hero{padding-bottom:84px}
+  .hero-grid{grid-template-columns:1.15fr .85fr;gap:56px;padding-top:36px}
+  .hero-phone{transform:rotate(2.5deg);width:320px}
+  .sub{font-size:1.25rem}
+  .band{padding:96px 0}
+  .pair{justify-content:flex-start;gap:28px}
+  .pair .phone{width:260px}
+  .steps{grid-template-columns:repeat(3,1fr);gap:36px}
+  .trio{overflow:visible;margin-inline:0;padding:6px 0 18px;gap:28px}
+  .trio .phone{width:260px}
+  .cards-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+  .cards-grid .trio{margin-top:0}
+  .leagues-grid{grid-template-columns:1fr 1fr;gap:56px}
+  .leagues-grid .phone{margin-inline:0}
+  .bar{display:none}
+  footer{padding-bottom:40px}
+}
+@media (prefers-reduced-motion:reduce){
+  .btn,.bar{transition:none}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="#"><img src="assets/icon-256.webp" width="44" height="44" alt=""><span>Idle Soccer Manager</span></a>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="tr" aria-pressed="false">TR</button>
+      </div>
+    </div>
+
+    <div class="hero-grid">
+      <div>
+        <h1 class="outlined"><span data-t="h1a">Build a street team.</span><span class="line-sun" data-t="h1b">Climb 10 leagues.</span></h1>
+        <p class="sub" data-t="sub">Collect player cards, spend your match bonus while the ball is rolling, and beat every boss. Free on Android.</p>
+        <div class="cta-wrap" id="heroCta">
+          <a class="btn" href="https://play.google.com/store/apps/details?id=com.dmr.IdleSoccerManager" data-play>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 2.8v18.4c0 .8.9 1.3 1.6.9l15-9.2a1 1 0 0 0 0-1.8L6.6 1.9C5.9 1.5 5 2 5 2.8z"/></svg>
+            <span data-t="cta">Download free on Google Play</span>
+          </a>
+          <p class="fine" data-t="fine">Free to play, with ads and optional in-app purchases.</p>
+        </div>
+      </div>
+      <div class="phone hero-phone">
+        <video id="heroVideo" muted loop playsinline preload="metadata" poster="assets/poster-en.webp" aria-label="Gameplay preview"></video>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="band">
+    <div class="wrap">
+      <h2 data-t="runTitle">Your team plays. You decide where the cash goes.</h2>
+      <div class="pair">
+        <figure class="phone" style="margin:0"><img src="assets/shot-match.webp" width="650" height="880" loading="lazy" alt="A live 5-a-side match with score, tactics and upgrade tabs"></figure>
+        <figure class="phone" style="margin:0"><img src="assets/shot-bonus.webp" width="540" height="752" loading="lazy" alt="Mid-match upgrade panel with attack, defense and sponsor upgrades"></figure>
+      </div>
+      <ol class="steps">
+        <li><h3 data-t="s1t">Let the match run</h3><p data-t="s1">Your 5-a-side team plays on its own. Goals, shots, saves and tackles earn you bonus cash.</p></li>
+        <li><h3 data-t="s2t">Spend it mid-match</h3><p data-t="s2">Put cash into attack, defense or your sponsor while the ball is rolling. Every choice changes the game.</p></li>
+        <li><h3 data-t="s3t">Beat the boss</h3><p data-t="s3">Each wave brings a tougher rival. Win the boss match to unlock the next league.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="band cards-band">
+    <div class="wrap cards-grid">
+      <div>
+        <h2 data-t="cardsTitle">Collect players. Make them stronger.</h2>
+        <p class="lead" data-t="cardsBody">Open packs to find player cards in four rarities, some with ultimate powers. Level them up and choose a formation: 2-1-1, 1-2-1 or 1-1-2.</p>
+        <ul class="extras">
+          <li data-t="ex1">Equip gear and hire a manager.</li>
+          <li data-t="ex2">Design your own club crest.</li>
+          <li data-t="ex3">Claim daily rewards.</li>
+        </ul>
+      </div>
+      <div class="trio">
+        <figure class="phone" style="margin:0"><img src="assets/shot-squad.webp" width="644" height="761" loading="lazy" alt="Squad screen with five starters and a list of player cards"></figure>
+        <figure class="phone" style="margin:0"><img src="assets/shot-upgrade.webp" width="618" height="883" loading="lazy" alt="Player card with stats and an ultimate power"></figure>
+        <figure class="phone" style="margin:0"><img src="assets/shot-pack.webp" width="720" height="867" loading="lazy" alt="Pack rewards with new player cards"></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap leagues-grid">
+      <figure class="phone" style="margin:0"><img src="assets/shot-leagues.webp" width="615" height="482" loading="lazy" alt="Isometric street court of the Legends League"></figure>
+      <div>
+        <h2 data-t="leaguesTitle">From the neighborhood court to the Legends League.</h2>
+        <p class="lead" data-t="leaguesBody">Ten leagues, each with waves of rivals that get tougher. Beat the boss to move up.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="final">
+    <div class="wrap">
+      <img src="assets/icon-256.webp" width="104" height="104" loading="lazy" alt="Idle Soccer Manager icon">
+      <h2 class="outlined" data-t="finalTitle">Your street team is waiting.</h2>
+      <div class="cta-wrap">
+        <a class="btn" href="https://play.google.com/store/apps/details?id=com.dmr.IdleSoccerManager" data-play>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 2.8v18.4c0 .8.9 1.3 1.6.9l15-9.2a1 1 0 0 0 0-1.8L6.6 1.9C5.9 1.5 5 2 5 2.8z"/></svg>
+          <span data-t="cta">Download free on Google Play</span>
+        </a>
+        <p class="fine" data-t="fine">Free to play, with ads and optional in-app purchases.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p data-t="legal1">Idle Soccer Manager is a free game by SKAARA.</p>
+    <p>Google Play and the Google Play logo are trademarks of Google LLC.</p>
+  </div>
+</footer>
+
+<div class="bar" id="bar">
+  <img src="assets/icon-256.webp" width="44" height="44" alt="">
+  <b>Idle Soccer Manager</b>
+  <a class="btn" href="https://play.google.com/store/apps/details?id=com.dmr.IdleSoccerManager" data-play><span data-t="ctaShort">Get it free</span></a>
+</div>
+
+<script>
+(function () {
+  /* ------------------------------------------------------------------
+     SETTINGS: paste your Google Ads values here (see the steps in chat).
+     Leave both empty and the page works without any tracking.
+  ------------------------------------------------------------------- */
+  var ADS = {
+    id: "",     // e.g. "AW-123456789"
+    label: ""   // e.g. "AbC-dEfGhIjKlMnOpQ"
+  };
+  var PLAY = "https://play.google.com/store/apps/details?id=com.dmr.IdleSoccerManager";
+
+  var T = {
+    en: {
+      title: "Idle Soccer Manager: Build Your 5-a-Side Street Team",
+      h1a: "Build a street team.", h1b: "Climb 10 leagues.",
+      sub: "Collect player cards, spend your match bonus while the ball is rolling, and beat every boss. Free on Android.",
+      cta: "Download free on Google Play", ctaShort: "Get it free",
+      fine: "Free to play, with ads and optional in-app purchases.",
+      runTitle: "Your team plays. You decide where the cash goes.",
+      s1t: "Let the match run", s1: "Your 5-a-side team plays on its own. Goals, shots, saves and tackles earn you bonus cash.",
+      s2t: "Spend it mid-match", s2: "Put cash into attack, defense or your sponsor while the ball is rolling. Every choice changes the game.",
+      s3t: "Beat the boss", s3: "Each wave brings a tougher rival. Win the boss match to unlock the next league.",
+      cardsTitle: "Collect players. Make them stronger.",
+      cardsBody: "Open packs to find player cards in four rarities, some with ultimate powers. Level them up and choose a formation: 2-1-1, 1-2-1 or 1-1-2.",
+      ex1: "Equip gear and hire a manager.", ex2: "Design your own club crest.", ex3: "Claim daily rewards.",
+      leaguesTitle: "From the neighborhood court to the Legends League.",
+      leaguesBody: "Ten leagues, each with waves of rivals that get tougher. Beat the boss to move up.",
+      finalTitle: "Your street team is waiting.",
+      legal1: "Idle Soccer Manager is a free game by SKAARA."
+    },
+    tr: {
+      title: "Idle Soccer Manager: Mahalle Takımını Kur",
+      h1a: "Mahalle takımını kur.", h1b: "10 ligi tırman.",
+      sub: "Futbolcu kartlarını topla, top oynanırken maç primini harca ve her boss'u yen. Android'de ücretsiz.",
+      cta: "Google Play'den ücretsiz indir", ctaShort: "Ücretsiz indir",
+      fine: "Ücretsiz oynanır; reklam ve isteğe bağlı uygulama içi satın alma içerir.",
+      runTitle: "Takım oynar. Primi sen yönetirsin.",
+      s1t: "Maçı oynat", s1: "5 kişilik takımın kendi kendine oynar. Gol, şut, kurtarış ve top kapma sana prim kazandırır.",
+      s2t: "Maç sürerken harca", s2: "Primi hücuma, savunmaya ya da sponsora yatır. Her seçim maçı değiştirir.",
+      s3t: "Boss'u yen", s3: "Her dalgada daha güçlü bir rakip gelir. Boss maçını kazan, sıradaki ligin kilidini aç.",
+      cardsTitle: "Oyuncuları topla. Güçlendir.",
+      cardsBody: "Paket aç, dört enderlikte futbolcu kartı bul; bazılarının ultimate gücü var. Kartları yükselt, dizilişi seç: 2-1-1, 1-2-1 ya da 1-1-2.",
+      ex1: "Ekipman kuşan, menajer tut.", ex2: "Kendi kulüp armanını tasarla.", ex3: "Günlük ödüllerini topla.",
+      leaguesTitle: "Mahalle sahasından Efsaneler Ligi'ne.",
+      leaguesBody: "On lig, her birinde giderek güçlenen rakip dalgaları. Yukarı çıkmak için boss'u yen.",
+      finalTitle: "Mahalle takımın seni bekliyor.",
+      legal1: "Idle Soccer Manager, SKAARA'nın ücretsiz oyunudur."
+    }
+  };
+
+  var qs = new URLSearchParams(location.search);
+  var lang = qs.get("lang");
+  if (lang !== "tr" && lang !== "en") {
+    lang = (navigator.language || "en").toLowerCase().indexOf("tr") === 0 ? "tr" : "en";
+  }
+
+  var video = document.getElementById("heroVideo");
+  var reduceMotion = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function setLang(l) {
+    lang = l;
+    document.documentElement.lang = l;
+    document.title = T[l].title;
+    var nodes = document.querySelectorAll("[data-t]");
+    for (var i = 0; i < nodes.length; i++) {
+      var k = nodes[i].getAttribute("data-t");
+      if (T[l][k]) nodes[i].textContent = T[l][k];
+    }
+    var btns = document.querySelectorAll(".lang button");
+    for (var j = 0; j < btns.length; j++) {
+      btns[j].setAttribute("aria-pressed", btns[j].getAttribute("data-lang") === l ? "true" : "false");
+    }
+    video.poster = "assets/poster-" + l + ".webp";
+    video.src = "assets/hero-" + l + ".mp4";
+    if (!reduceMotion) { var p = video.play(); if (p && p.catch) p.catch(function () {}); }
+  }
+
+  document.querySelector(".lang").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-lang]");
+    if (b) setLang(b.getAttribute("data-lang"));
+  });
+
+  /* ---- Play link: carries the campaign into Google Play's install referrer ---- */
+  var ref = "utm_source=google&utm_medium=cpc&utm_campaign=" +
+    encodeURIComponent(qs.get("utm_campaign") || "demand_gen");
+  if (qs.get("gclid")) ref += "&gclid=" + encodeURIComponent(qs.get("gclid"));
+  var playUrl = PLAY + "&referrer=" + encodeURIComponent(ref);
+  var links = document.querySelectorAll("[data-play]");
+  for (var n = 0; n < links.length; n++) links[n].href = playUrl;
+
+  /* ---- Google tag + conversion on the Play button ---- */
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  if (ADS.id) {
+    var s = document.createElement("script");
+    s.async = true;
+    s.src = "https://www.googletagmanager.com/gtag/js?id=" + ADS.id;
+    document.head.appendChild(s);
+    gtag("js", new Date());
+    gtag("config", ADS.id);
+  }
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest("[data-play]");
+    if (!a || !ADS.id || !ADS.label) return;
+    e.preventDefault();
+    var done = false;
+    function go() { if (!done) { done = true; location.href = playUrl; } }
+    gtag("event", "conversion", { send_to: ADS.id + "/" + ADS.label, event_callback: go });
+    setTimeout(go, 800);
+  });
+
+  /* ---- sticky bar once the hero button scrolls away ---- */
+  var bar = document.getElementById("bar");
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (en) {
+      bar.classList.toggle("on", !en[0].isIntersecting && en[0].boundingClientRect.top < 0);
+    }).observe(document.getElementById("heroCta"));
+  }
+
+  setLang(lang);
+})();
+</script>
+</body>
+</html>
